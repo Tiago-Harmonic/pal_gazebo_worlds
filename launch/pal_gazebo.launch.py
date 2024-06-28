@@ -90,7 +90,7 @@ def generate_launch_description():
         'world_name', default_value='',
         description="Specify world name, we'll convert to full path"
     )
-    debug_launch_arg = DeclareLaunchArgument(
+    declare_debug = DeclareLaunchArgument(
         'debug', default_value="false",
         description="If debug start the gazebof world into a gdb session in an xterm terminal"
     )
@@ -103,7 +103,7 @@ def generate_launch_description():
     # Create the launch description and populate
     ld = LaunchDescription()
 
-    ld.add_action(debug_launch_arg)
+    ld.add_action(declare_debug)
     ld.add_action(declare_world_name)
 
     ld.add_action(SetEnvironmentVariable('GAZEBO_MODEL_PATH', model_path))
