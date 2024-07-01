@@ -93,7 +93,7 @@ def generate_launch_description():
     declare_debug = DeclareLaunchArgument(
         'debug', default_value="False",
         choices=['True', 'False'],
-        description="If debug start the gazebof world into a gdb session in an xterm terminal"
+        description="If debug start the gazebo world into a gdb session in an xterm terminal"
     )
 
     start_gazebo_server_cmd = OpaqueFunction(function=start_gzserver)
