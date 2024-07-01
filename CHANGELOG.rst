@@ -2,8 +2,8 @@
 Changelog for package pal_gazebo_worlds
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+4.0.4 (2024-07-01)
+------------------
 * Use single quotes
 * Fix typo
 * Use uppercase for debug argument choices
