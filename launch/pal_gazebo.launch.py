@@ -53,7 +53,7 @@ def start_gzserver(context, *args, **kwargs):
         '--ros-args', '--params-file', params_file]
     # Start the server under the gdb framework.
     debug = LaunchConfiguration('debug').perform(context)
-    if debug == "true":
+    if debug == "True":
         gazebo_server_cmd_line = (
             ['xterm', '-e', 'gdb', '-ex', 'run', '--args'] +
             gazebo_server_cmd_line
@@ -91,7 +91,8 @@ def generate_launch_description():
         description="Specify world name, we'll convert to full path"
     )
     declare_debug = DeclareLaunchArgument(
-        'debug', default_value="false",
+        'debug', default_value="False",
+        choices=['True', 'False'],
         description="If debug start the gazebof world into a gdb session in an xterm terminal"
     )
 
