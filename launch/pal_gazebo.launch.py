@@ -48,9 +48,7 @@ def start_gzserver(context, *args, **kwargs):
 
     # Command to start the gazebo server.
     gazebo_server_cmd_line = [
-        'gzserver', '-s', 'libgazebo_ros_init.so',
-        '-s', 'libgazebo_ros_factory.so', world,
-        '--ros-args', '--params-file', params_file]
+        'gz', 'sim', world, '-r' , '-v', '4']
     # Start the server under the gdb framework.
     debug = LaunchConfiguration('debug').perform(context)
     if debug == 'True':
@@ -79,12 +77,12 @@ def generate_launch_description():
     # Add pal_gazebo_worlds path
     pkg_path = get_package_share_directory('pal_gazebo_worlds')
     model_path += os.path.join(pkg_path, 'models')
-    resource_path += pkg_path
+    resource_path += pkg_path + model_path
 
-    if 'GAZEBO_MODEL_PATH' in environ:
-        model_path += pathsep+environ['GAZEBO_MODEL_PATH']
-    if 'GAZEBO_RESOURCE_PATH' in environ:
-        resource_path += pathsep+environ['GAZEBO_RESOURCE_PATH']
+    if 'GZ_SIM_MODEL_PATH' in environ:
+        model_path += pathsep+environ['GZ_SIM_MODEL_PATH']
+    if 'GZ_SIM_RESOURCE_PATH' in environ:
+        resource_path += pathsep+environ['GZ_SIM_RESOURCE_PATH']
 
     declare_world_name = DeclareLaunchArgument(
         'world_name', default_value='',
@@ -98,20 +96,17 @@ def generate_launch_description():
 
     start_gazebo_server_cmd = OpaqueFunction(function=start_gzserver)
 
-    start_gazebo_client_cmd = ExecuteProcess(
-        cmd=['gzclient'], output='screen')
-
     # Create the launch description and populate
     ld = LaunchDescription()
 
+    ld.add_action(SetEnvironmentVariable('GZ_SIM_RESOURCE_PATH', model_path))
     ld.add_action(declare_debug)
     ld.add_action(declare_world_name)
 
-    ld.add_action(SetEnvironmentVariable('GAZEBO_MODEL_PATH', model_path))
+    ld.add_action(SetEnvironmentVariable('GZ_SIM_MODEL_PATH', model_path))
     # Using this prevents shared library from being found
     # ld.add_action(SetEnvironmentVariable('GAZEBO_RESOURCE_PATH', resource_path))
 
     ld.add_action(start_gazebo_server_cmd)
-    ld.add_action(start_gazebo_client_cmd)
 
     return ld
